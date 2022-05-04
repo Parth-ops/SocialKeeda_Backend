@@ -193,7 +193,7 @@ def youtube():
     top_pos = top_pos.to_dict()
     
     # print(data)
-    succ = {"message":"Successfull", "donut":donut, "title":title, "full_data":full_data,
+    succ = {"message":"Successfull Youtube", "donut":donut, "title":title, "full_data":full_data,
              "top_neg":top_neg, "top_pos":top_pos, "avg_comp":avg_comp}
              
     send_data = json.dumps(succ, cls=NpEncoder)
@@ -238,12 +238,19 @@ def twitter():
   tweets_data["scores"] = tweets_scores
   tweets_data['compound']  =  tweets_data['scores'].apply(lambda score_dict: score_dict['compound'])
   tweets_data['comp_score'] = tweets_data['compound'].apply(checker_2)
+  
+  donut = tweets_data.groupby(['comp_score']).count()
+  avg_comp = tweets_data['compound'].mean()
+  donut = donut['compound']
+  donut = dict(donut)
   tweets_data = tweets_data.to_dict()
+  succ = {"message":"Successfull Twitter", "donut":donut,  "full_data":tweets_data, "avg_comp":avg_comp}
+
+  tweets = []
+  
   
 
-  
-
-  send_data = json.dumps(tweets_data, cls=NpEncoder)
+  send_data = json.dumps(succ, cls=NpEncoder)
 
   return send_data
 
